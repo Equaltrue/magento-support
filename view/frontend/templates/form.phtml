@@ -1,0 +1,224 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+// phpcs:disable Magento2.Templates.ThisInTemplate
+// phpcs:disable Generic.Files.LineLength.TooLong
+
+/** @var \Magento\Contact\Block\ContactForm $block */
+/** @var \Magento\Contact\ViewModel\UserDataProvider $viewModel */
+/** @var \Equaltrue\Support\ViewModel\Contact\Setting $settingViewModel */
+
+use Magento\Framework\App\ObjectManager;
+
+//-- Setting Session for later use in Form
+$objectManager = ObjectManager::getInstance();
+$customerSession = $objectManager->get('\Magento\Customer\Model\Session');
+$customerSession->setCustomerContactToken("Available");
+
+$viewModel = $block->getViewModel();
+
+//-- Google Captcha Logic
+$settingViewModel = $block->getSettingViewModel();
+$settingValue     = $settingViewModel->getGoogleCaptchaSetting();
+$status           = $settingValue['status'];
+$gcLanguage       = $settingValue['google_captcha_language'];
+$fcKey            = $settingValue['google_captcha_key'];
+?>
+<form class="form contact"
+      action="<?= $block->escapeUrl($block->getFormAction()) ?>"
+      id="contact-form"
+      method="post"
+      data-hasrequired="<?= $block->escapeHtmlAttr(__('* Required Fields')) ?>"
+      data-mage-init='{"validation":{}}'>
+    <?php if ($status):?>
+        <script src="https://www.google.com/recaptcha/api.js?hl=<?= $gcLanguage?>" async defer></script>
+    <?php endif;?>
+    <fieldset class="fieldset">
+        <legend class="legend"><span><?= $block->escapeHtml(__('Write Us')) ?></span></legend><br />
+        <div class="field note no-label">
+            <?= $block->escapeHtml(__('Jot us a note and we’ll get back to you as quickly as possible.')) ?>
+        </div>
+        <div class="field name required">
+            <label class="label" for="name"><span><?= $block->escapeHtml(__('Name')) ?></span></label>
+            <div class="control">
+                <input name="name"
+                       id="name"
+                       title="<?= $block->escapeHtmlAttr(__('Name')) ?>"
+                       value="<?= $block->escapeHtmlAttr($viewModel->getUserName()) ?>"
+                       class="input-text"
+                       type="text"
+                       data-validate="{required:true}"/>
+            </div>
+        </div>
+        <div class="field email required">
+            <label class="label" for="email"><span><?= $block->escapeHtml(__('Email')) ?></span></label>
+            <div class="control">
+                <input name="email"
+                       id="email"
+                       title="<?= $block->escapeHtmlAttr(__('Email')) ?>"
+                       value="<?= $block->escapeHtmlAttr($viewModel->getUserEmail()) ?>"
+                       class="input-text"
+                       type="email"
+                       data-validate="{required:true, 'validate-email':true}"
+                       data-mage-init='{"mage/trim-input":{}}'
+                />
+            </div>
+        </div>
+        <div class="field telephone">
+            <label class="label" for="telephone"><span><?= $block->escapeHtml(__('Phone Number')) ?></span></label>
+            <div class="control">
+                <input name="telephone"
+                       id="telephone"
+                       title="<?= $block->escapeHtmlAttr(__('Phone Number')) ?>"
+                       value="<?= $block->escapeHtmlAttr($viewModel->getUserTelephone()) ?>"
+                       class="input-text"
+                       type="tel" />
+            </div>
+        </div>
+        <div class="field comment required">
+            <label class="label" for="comment">
+                <span><?= $block->escapeHtml(__('What’s on your mind?')) ?></span>
+            </label>
+            <div class="control">
+                <textarea name="comment"
+                          id="comment"
+                          title="<?= $block->escapeHtmlAttr(__('What’s on your mind?')) ?>"
+                          class="input-text"
+                          cols="5"
+                          rows="3"
+                          data-validate="{required:true}"
+                ><?= $block->escapeHtml($viewModel->getUserComment()) ?></textarea>
+            </div>
+        </div>
+        <?= $block->getChildHtml('form.additional.info') ?>
+    </fieldset>
+
+    <?php if ($status) : ?>
+        <div class="g-recaptcha" data-sitekey="<?= $fcKey?>" data-callback="recaptchaCallback"></div>
+        <p class="google-recaptcha"></p>
+    <?php endif;?>
+    <div class="actions-toolbar">
+        <div class="primary">
+            <input type="hidden" name="hideit" id="hideit" value="" />
+            <button type="submit" title="<?= $block->escapeHtmlAttr(__('Submit')) ?>" class="action submit primary">
+                <span><?= $block->escapeHtml(__('Submit')) ?></span>
+            </button>
+        </div>
+    </div>
+</form>
+
+<style>
+    .invalid-recaptcha iframe{
+        border: 2px solid red;
+    }
+    .contact-form-index-content {
+        display: grid;
+        justify-content: center;
+        margin-bottom: 30px;
+    }
+    .contact-form-wrap {
+        max-width: 750px;
+    }
+    .contact-form-index-content .contact-index-title {
+        margin-top: 40px;
+        font-size: 24px;
+        text-align: center;
+    }
+    .contact-form-index-content .contact-index-subtitle {
+        font-size: 24px;
+        line-height: 35px;
+        text-align: left;
+        margin: 30px 0 20px;
+        padding: 0;
+    }
+    .contact-form-index-content .contact-index-title:after {
+        content: "";
+        display: block;
+        margin: auto;
+        width: 124px;
+        padding-top: 12px;
+        border-bottom: 2px solid #00AA5B;
+    }
+    .contact-form-index-content p {
+        line-height: 28px;
+        font-size: 16px;
+        color: #393C43;
+    }
+    .content-form-with-content {
+        grid-template-columns: repeat(2, 1fr);
+        grid-column-gap: 20px;
+        display: grid;
+    }
+    .contact-form-index-content  .fieldset>.field.required>.label:after,
+    .contact-form-index-content  .fieldset>.fields>.field.required>.label:after,
+    .contact-form-index-content  .fieldset>.field._required>.label:after,
+    .contact-form-index-content  .fieldset>.fields>.field._required>.label:after {
+        content: '*';
+        color: #e02b27;
+        font-size: 1.3rem;
+        margin: 0 0 0 5px;
+    }
+    .contact-form-index-content  .fieldset .field {
+        margin-bottom: 15px;
+    }
+    .contact-form-index-content  .fieldset .field input{
+        height: 40px;
+        padding: 0 10px;
+    }
+    .contact-form-index-content  .fieldset .field textarea{
+        width: 100%;
+        height: 80px;
+        border: 1px solid #c2c2c2;
+    }
+    @media (max-width: 767px) {
+        .contact-form-wrap {
+            max-width: 100%;
+            margin: 20px;
+        }
+        .content-form-with-content {
+            grid-template-columns: repeat(1, 1fr);
+        }
+        .contact-form-index-content p {
+            text-align: center;
+            font-size: 14px;
+        }
+        .contact-form-index-content .contact-index-title {
+            margin-top: 20px;
+            font-size: 20px;
+        }
+        .contact-form-index-content .contact-index-subtitle {
+            text-align: center;
+            font-size: 18px;
+            margin: 20px 0 0 0;
+        }
+    }
+
+</style>
+<script type="text/javascript">
+    var checkCaptcha = false;
+    var recaptchaCallback = function (response) {
+        if (response === "") {
+            checkCaptcha = false;
+        } else {
+            document.getElementsByClassName("g-recaptcha")[0].classList.remove("invalid-recaptcha");
+            checkCaptcha = true;
+        }
+    };
+    require([
+        'jquery'
+    ], function(){
+        jQuery(document).ready(function(){
+            jQuery(".form.contact").submit(function() {
+                if(checkCaptcha){
+                    jQuery(".g-recaptcha").removeClass("invalid-recaptcha");
+                }else {
+                    jQuery(".g-recaptcha").addClass("invalid-recaptcha");
+                    return false;
+                }
+            });
+        });
+    });
+</script>
