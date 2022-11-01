@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Equaltrue (shuvoenr@gmail.com)
+ *
+ * @category  Support
+ * @package   Equaltrue_Support
+ * @copyright Copyright (c) Equaltrue
+ * @author    Suvankar Paul
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Acl/etc/acl.xsd">
+    <acl>
+        <resources>
+            <resource id="Magento_Backend::admin" title="Magento Admin">
+                <resource id="Equaltrue_Core::core" title="Equaltrue" translate="title" sortOrder="900">
+                    <resource id="Equaltrue_Support::support" title="Enhance Contact and Support" translate="title" sortOrder="1000" />
+                </resource>
+            </resource>
+        </resources>
+    </acl>
+</config>

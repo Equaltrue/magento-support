@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Equaltrue - Suvankar Paul
+ *
+ * This source file is subject to the Equaltrue license
+ *
+ * @category  Support
+ * @package   Equaltrue_Support
+ * @copyright Copyright (c) Equaltrue (https://equaltrue.com)
+ * @author    Suvankar Paul
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Module/etc/module.xsd">
+    <module name="Equaltrue_Support">
+        <sequence>
+            <module name="Magento_Contact"/>
+        </sequence>
+    </module>
+</config>

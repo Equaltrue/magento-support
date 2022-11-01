@@ -1,0 +1,91 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Equaltrue - Suvankar Paul
+ *
+ * This source file is subject to the Equaltrue license
+ *
+ * @category  Support
+ * @package   Equaltrue_Support
+ * @copyright Copyright (c) Equaltrue (https://equaltrue.com)
+ * @author    Suvankar Paul
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="equaltrue" translate="label" sortOrder="400" class="equaltrue">
+            <label>Equaltrue</label>
+        </tab>
+        <section id="support" translate="label" type="text" sortOrder="280" showInDefault="1">
+            <class>separator-top</class>
+            <label>Enhance Contact and Support</label>
+            <tab>equaltrue</tab>
+            <resource>Equaltrue_Support::support</resource>
+            <group id="contact_general" translate="label" type="text" sortOrder="10" showInDefault="1">
+                <label>General</label>
+                <field id="enabled" translate="label" type="select" showInDefault="1">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment><![CDATA[<p style="font-size: 11px;">Disable or Enabled full Enhance Contact and Support Feature</p>]]></comment>
+                </field>
+            </group>
+
+            <!-- Filter Email -->
+            <group id="contact_filter" translate="label" type="text" sortOrder="30" showInDefault="1">
+                <label>Email and Domain Filter</label>
+                <comment><![CDATA[<p style="font-size: 12px;">This feature will filter the email which comes from junk domain and junk email.</p>]]></comment>
+                <field id="enabled" type="select" translate="label comment" showInDefault="1">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="domains" translate="label" type="textarea" sortOrder="100" showInDefault="1">
+                    <label>Filter (Disposal) Domain List</label>
+                    <comment><![CDATA[Comma Seperated Value]]></comment>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                </field>
+                <field id="emails" translate="label" type="textarea" sortOrder="110" showInDefault="1">
+                    <label>Filter (Disposal) Email List</label>
+                    <comment><![CDATA[Comma Seperated Value]]></comment>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                </field>
+            </group>
+
+            <!-- Captcha on Contact -->
+            <group id="captcha_settings" translate="label" type="text" sortOrder="30" showInDefault="1">
+                <label>Captcha on Form</label>
+                <comment><![CDATA[<p style="font-size: 12px;">Capture Master Settings</p>]]></comment>
+                <field id="enabled" type="select" translate="label comment" showInDefault="1">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="captcha_contact_from" translate="label" type="select" sortOrder="100" showInDefault="1">
+                    <label>Captcha on Contact Form</label>
+                    <comment><![CDATA[Show Captcha on Storefront Setting]]></comment>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                </field>
+                <field id="google_captcha_language" translate="label" type="select" sortOrder="200" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Server</label>
+                    <comment><![CDATA[Language that will show in captcha]]></comment>
+                    <source_model>Equaltrue\Support\Model\Config\Source\Language</source_model>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                </field>
+                <field id="google_captcha_key" translate="label" type="text" sortOrder="300" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Google Captcha V2 Site Key</label>
+                    <comment><![CDATA[Site Key for V2]]></comment>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

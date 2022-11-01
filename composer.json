@@ -1,0 +1,22 @@
+{
+    "name": "equaltrue/magento2-module-support",
+    "description": "Enhance Support & Ticket Module for Magento 2",
+    "require": {
+      "php": "^8.1",
+      "magento/framework": ">=103",
+      "laminas/laminas-log": "^2.15"
+    },
+    "type": "magento2-module",
+    "version": "1.0.0",
+    "license": [
+        "MIT"
+    ],
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Equaltrue\\Support\\": ""
+        }
+    }
+}
