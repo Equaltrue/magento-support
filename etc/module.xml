@@ -15,6 +15,7 @@
     <module name="Equaltrue_Support">
         <sequence>
             <module name="Magento_Contact"/>
+            <module name="Equaltrue_Core"/>
         </sequence>
     </module>
 </config>
